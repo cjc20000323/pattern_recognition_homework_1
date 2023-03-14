@@ -3,6 +3,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import copy
 import os
+import argparse
 
 def uniform_background(low=0.0, high=1.0, dim1=1, dim2=64, dim3=64):
     background = np.random.uniform(low=low, high=high, size=(dim1,dim2,dim3))
@@ -40,7 +41,7 @@ def guassion_multi_overlap_anomaly(background, loc=0.0, scale=1.0, save_anomaly 
     times = np.random.randint(low,high)
     save_names = ""
     for _ in range(times):
-        background, name = guassion_single_anomaly(background, save_anomaly = False)
+        background, name = guassion_single_anomaly(background, loc=loc, scale=scale, save_anomaly = False)
         save_names = save_names + "--" + name.split(".")[0]
 
     if save_name == None:
@@ -70,8 +71,7 @@ def heatmap_output(picture, savename=None, savedir=None):
     else:
         heatmap.savefig(os.path.join(savedir,savename))
 
-
-if __name__=='__main__':
+def test():
     # 获得均匀分布背景
     background = uniform_background()
     # 获得并保存单个高斯异常矩阵
@@ -82,3 +82,28 @@ if __name__=='__main__':
     heatmap_output(background, savename="heatmap_uniform.jpg")
     heatmap_output(guass_anomaly, savename="heatmap_gauss.jpg")
     heatmap_output(guass_anomalys, savename="heatmap_gausses.jpg")
+
+if __name__=='__main__':
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--output_dir', default="./data_generation/data", type=str, help='')
+    parser.add_argument('--output_name', default=None, type=str, help='')
+    parser.add_argument('--generate_number','--gn', default=1, type=int, help='the data number scale')
+    parser.add_argument('--generate_type','--gt', default="guassion_single_anomaly", choices=['guassion_single_anomaly', 'guassion_multi_overlap_anomaly'], type=str, help='the anomaly type')
+    args = parser.parse_args()
+
+    # test()
+
+
+    save_dir = os.path.join(args.output_dir,args.generate_type)
+    if not os.path.exists(save_dir):
+        os.mkdir(save_dir)
+
+    background = uniform_background()
+    for _ in range(args.generate_number):
+        if args.generate_type == "guassion_single_anomaly":
+            guass_anomaly, _ = guassion_single_anomaly(copy.deepcopy(background), save_dir=save_dir, save_name=args.output_name)
+        elif args.generate_type == "guassion_multi_overlap_anomaly":
+            guassion_multi_overlap_anomaly(copy.deepcopy(background), save_dir=save_dir, save_name=args.output_name)
+        else:
+            raise ValueError("undefined anomaly type")
