@@ -1,6 +1,11 @@
 ## 使用方法
   python --gn 10 --gt guassion_multi_overlap_anomaly
-
+  
+  args：
+  --output_dir 指定输出文件夹
+  --output_name 自定义输出命名
+  --gn 生成异常样例个数
+  --gt 生成异常样例类型 choices=['guassion_single_anomaly', 'guassion_multi_overlap_anomaly']
 
 
 
