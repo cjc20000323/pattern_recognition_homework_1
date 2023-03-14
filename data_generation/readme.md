@@ -1,6 +1,13 @@
-函数功能
+## 使用方法
+  python --gn 10 --gt guassion_multi_overlap_anomaly
 
-**uniform_background**：获得均匀分布背景
+
+
+
+
+## 函数功能
+
+### **uniform_background**：获得均匀分布背景
 
 ​	**para：**	low：最小值（default=0）；
 
@@ -14,7 +21,7 @@
 
 
 
-**guassion_background**：获得高斯分布背景
+### **guassion_background**：获得高斯分布背景
 
 ​	**para：**	loc：均值（default=0）；
 
@@ -28,7 +35,7 @@
 
 
 
-**guassion_single_anomaly**：在随机位置插入一个高斯异常
+### **guassion_single_anomaly**：在随机位置插入一个高斯异常
 
 ​	**para：**	background：背景分布
 
@@ -46,7 +53,7 @@
 
 
 
-**guassion_multi_overlap_anomaly**：在随机位置插入2-5个高斯异常（不同异常之间可能存在重叠区域）
+### **guassion_multi_overlap_anomaly**：在随机位置插入2-5个高斯异常（不同异常之间可能存在重叠区域）
 
 **para：**	background：背景分布
 
@@ -68,7 +75,7 @@
 
 
 
-**heatmap_output**：获得热力图输出
+### **heatmap_output**：获得热力图输出
 
 ​						picture：热力矩阵
 
