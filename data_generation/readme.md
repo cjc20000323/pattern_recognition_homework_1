@@ -1,4 +1,4 @@
-#函数功能
+# 函数功能
 
 **uniform_background**：获得均匀分布背景
 
