@@ -12,16 +12,17 @@ data_train = pickle.load(f_train)
 data_test = pickle.load(f_test)
 
 
-def guess_kernel():
-    pass
+def gauss_kernel(x, sigma):
+    return 1 / math.sqrt(2 * math.pi) / sigma * math.exp(-1 / 2 * math.pow(x, 2) / math.pow(sigma, 2))
 
 
-def knn(k, plot_loc, data):
+def knn(k, plot_loc, data, use_gauss=False):
     '''
     :param k: KNN算法中的k值，超参数
     :param plot_loc: 估计该位置的概率密度
     :param data: 两类坐标数据中的一类
-    :return:
+    :param use_gauss: 是否使用高斯核
+    :return: 估计位置的概率密度
     '''
 
     dis_list = []
@@ -30,11 +31,17 @@ def knn(k, plot_loc, data):
         dis_list.append(dis)
 
     dis_list.sort()
-    r = dis_list[k]  # 排序后，距离是从小到大的，这样，取第k个大小的，那么恰好选中了k个点，这里暂不考虑距离相同的多个点的问题
+    r = dis_list[k-1]  # 排序后，距离是从小到大的，这样，取第k个大小的，那么恰好选中了k个点，这里暂不考虑距离相同的多个点的问题
     n = len(dis_list)
     V = math.pi * math.pow(r, 2)
+    count = 0
+    if use_gauss:
+        for i in range(k):
+            count += gauss_kernel(dis_list[i] / r, 1.3)
+    else:
+        count = k
 
-    p = k / n / V
+    p = count / n / V
 
     return p
 
@@ -58,7 +65,7 @@ if __name__ == '__main__':
     prior_1 = 0.4
 
     predict = []
-    k = 130
+    k = 150
     for x, y in tqdm(data_test['X']):
         condition_0 = knn(k, [x, y], data_train_np_X_0)
         condition_1 = knn(k, [x, y], data_train_np_X_1)
@@ -75,15 +82,15 @@ if __name__ == '__main__':
     plt.rcParams['font.sans-serif'] = ['FangSong']  # 用来正常显示中文标签
     plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
 
-    xx = np.arange(-4, 4, 0.1)
-    yy = np.arange(-4, 4, 0.1)
+    xx = np.arange(-4, 4, 0.05)
+    yy = np.arange(-4, 4, 0.05)
     X, Y = np.meshgrid(xx, yy)
 
     print(X.shape)
     print(Y.shape)
-    Z_0 = np.zeros((80, 80), float)
-    Z_1 = np.zeros((80, 80), float)
-    for i in range(len(X)):
+    Z_0 = np.zeros((160, 160), float)
+    Z_1 = np.zeros((160, 160), float)
+    for i in tqdm(range(len(X))):
         for j in range(len(X[0])):
             Z_0[i][j] = knn(k, [X[i][j], Y[i][j]], data_train_np_X_0)
             Z_1[i][j] = knn(k, [X[i][j], Y[i][j]], data_train_np_X_1)
