@@ -38,7 +38,7 @@ if __name__ == '__main__':
     # pickle.dump(data_test, open('data/data_test.pkl', 'wb'))
 
     # 真实分布的可视化
-    XX, YY = np.mgrid[-4:4:0.1, -4:4:0.1]
+    XX, YY = np.mgrid[-5:4:0.05, -5:4:0.05]
     Z0 = multivariate_normal.pdf(np.dstack([XX, YY]), mean=data0_mean, cov=data0_cov)
     Z1 = multivariate_normal.pdf(np.dstack([XX, YY]), mean=data1_mean, cov=data1_cov)
     # 真实分布的3D概率密度图
@@ -46,28 +46,38 @@ if __name__ == '__main__':
     ax3 = plt.axes(projection='3d')
     ax3.plot_surface(XX, YY, Z0, cmap='rainbow')
     ax3.plot_surface(XX, YY, Z1, cmap='rainbow')
-    # plt.savefig('pictures/true_3D.png')
+    plt.xlim(-5, 4)
+    plt.ylim(-5, 4)
+    plt.title('真实分布 3D概率密度图')
+    plt.savefig('pictures/true_3D.png')
     plt.show()
     # 真实分布的等高线概率密度图
     plt.contour(XX, YY, Z0)
     plt.contour(XX, YY, Z1)
-    # plt.savefig('pictures/true_contour.png')
+    plt.xlim(-5, 4)
+    plt.ylim(-5, 4)
+    plt.title('真实分布 等高线概率密度图')
+    plt.savefig('pictures/true_contour.png')
     plt.show()
 
     # 训练集样本可视化
     X0_train = X_train[y_train == 0]
     X1_train = X_train[y_train == 1]
-    plt.scatter(X0_train[:, 0], X0_train[:, 1], linewidths=0, s=10, alpha=0.5)
-    plt.scatter(X1_train[:, 0], X1_train[:, 1], linewidths=0, s=10, alpha=0.5)
+    plt.scatter(X0_train[:, 0], X0_train[:, 1], linewidths=0, s=10, alpha=0.5, c='b')
+    plt.scatter(X1_train[:, 0], X1_train[:, 1], linewidths=0, s=10, alpha=0.5, c='r')
+    plt.xlim(-5, 4)
+    plt.ylim(-5, 4)
     plt.title('训练集样本')
-    # plt.savefig('pictures/scatter_train.png')
+    plt.savefig('pictures/scatter_train.png')
     plt.show()
 
     # 测试集样本可视化
     X0_test = X_test[y_test == 0]
     X1_test = X_test[y_test == 1]
-    plt.scatter(X0_test[:, 0], X0_test[:, 1], linewidths=0, s=10, alpha=0.5)
-    plt.scatter(X1_test[:, 0], X1_test[:, 1], linewidths=0, s=10, alpha=0.5)
+    plt.scatter(X0_test[:, 0], X0_test[:, 1], linewidths=0, s=10, alpha=0.5, c='b')
+    plt.scatter(X1_test[:, 0], X1_test[:, 1], linewidths=0, s=10, alpha=0.5, c='r')
+    plt.xlim(-5, 4)
+    plt.ylim(-5, 4)
     plt.title('测试集样本')
-    # plt.savefig('pictures/scatter_test.png')
+    plt.savefig('pictures/scatter_test.png')
     plt.show()
