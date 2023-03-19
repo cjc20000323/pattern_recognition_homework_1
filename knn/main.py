@@ -14,8 +14,10 @@ data_test = pickle.load(f_test)
 
 if __name__ == '__main__':
     data_train_np_X = np.array(data_train['X'])
+    print(data_train_np_X)
     data_train_np_y = np.array(data_train['y'])
     data_train_np_X_0 = data_train_np_X[np.where(data_train_np_y == 0)]
+    print(data_train_np_X_0)
     # data_train_np_y_0 = data_train_np_y[np.where(data_train_np_y == 0)]
     data_train_np_X_1 = data_train_np_X[np.where(data_train_np_y == 1)]
     # data_train_np_y_1 = data_train_np_y[np.where(data_train_np_y == 1)]
@@ -31,8 +33,8 @@ if __name__ == '__main__':
     prior_0 = (data_train_np_y == 0).sum() / len(data_train_np_X)
     prior_1 = (data_train_np_y == 1).sum() / len(data_train_np_X)
 
-    knn_0 = KNN(K=150)
-    knn_1 = KNN(K=150)
+    knn_0 = KNN(K=1500)
+    knn_1 = KNN(K=1500)
     knn_0.fit(data_train_np_X_0)
     knn_1.fit(data_train_np_X_1)
 
@@ -55,7 +57,7 @@ if __name__ == '__main__':
     plt.xlim(-5, 4)
     plt.ylim(-5, 4)
     plt.title('KNN 3D概率密度图')
-    plt.savefig('pictures/knn_3D.png')
+    plt.savefig('pictures/knn_3D_1500.png')
     plt.show()
     # KNN的等高线概率密度图
     plt.contour(X, Y, Z_0)
@@ -63,7 +65,7 @@ if __name__ == '__main__':
     plt.xlim(-5, 4)
     plt.ylim(-5, 4)
     plt.title('KNN 等高线概率密度图')
-    plt.savefig('pictures/knn_contour.png')
+    plt.savefig('pictures/knn_contour_1500.png')
     plt.show()
     # 测试集样本+决策面 的图
     condition_0 = knn_0.predict(np.dstack([X, Y]))
@@ -76,5 +78,5 @@ if __name__ == '__main__':
     plt.xlim(-5, 4)
     plt.ylim(-5, 4)
     plt.title(f'贝叶斯决策面 Acc:{acc:.2%}')
-    plt.savefig('pictures/decision_surface.png')
+    plt.savefig('pictures/decision_surface_1500.png')
     plt.show()
